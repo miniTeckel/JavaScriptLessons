@@ -2,7 +2,7 @@ const readAll = require('./read-all');
 
 function show(file) {
   console.log('-'.repeat(10));
-  console.log("Содержимое файлы ${file.name}:");
+  console.log(`Содержимое файлы ${file.name}:`);
   console.log(file.content);
   console.log('-'.repeat(10));
 }
