@@ -1,22 +1,24 @@
 const fs = require('fs');
-const file = require('./file-promise');
 const path = require('path');
 
-function readfiles(base_path, files){
-    var file_array = new Array(); 
-    for (let i = 0; i < files.length; i++) {
-        file_array.push(
-            file
-                .read(path.join(base_path, files[i]))
-                .then(text => {
-                    var obj = {
-                        name: files[i],
-                        content: text
-                    };
-                    return obj;
-                }));
-    }
-    return file_array;
+
+function read_file(file_path) {
+    return new Promise((done, fail) => {
+        fs.readFile(file_path, 'utf8', (err, text) =>{
+            if (err) {
+                fail(err);
+            } else {
+                done ({
+                    name: file_path,
+                    content: text
+                });
+            }   
+        });
+    })
+}
+
+function read_files(base_path, files){
+    return files.map(item => read_file(path.join(base_path, item)))
 }
 
 function read_dir (path){
@@ -27,7 +29,7 @@ function read_dir (path){
             }
             else {
                 Promise
-                    .all(readfiles(path, files))
+                    .all(read_files(path, files))
                     .then(result => done(result))
                     .catch(err => fail(err));
             };

@@ -8,7 +8,7 @@ function file_info_dir(path, callback){
             var info ={
                 path: path,
                 type: 'directory',
-                childs: files
+                childs: files // BTW: there is no such word "childs"
             };
             callback(null, info);
         }
