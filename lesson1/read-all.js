@@ -9,9 +9,10 @@ function readfiles(base_path, files){
             file
                 .read(path.join(base_path, files[i]))
                 .then(text => {
-                    var obj = {};
-                    obj.name = files[i];
-                    obj.content = text;
+                    var obj = {
+                        name: files[i],
+                        content: text
+                    };
                     return obj;
                 }));
     }
