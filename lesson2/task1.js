@@ -14,6 +14,13 @@ class ChatApp extends EventEmitter {
       this.emit('message', `${this.title}: ping-pong`);
   }, 1000);
   }
+  
+  // метод close, который вызывает событие close 
+  // (событие вызывается один раз, setInterval как в констукторе, не нужен).
+  close(){
+    this.emit('close');
+  }
+
 }
 
 let webinarChat =  new ChatApp('webinar');
@@ -38,15 +45,24 @@ vkChat.setMaxListeners(2);
 vkChat.on('message', ready_Message);
 
 
+// Для чата вконтакте (vkChat) добавить обработчик close,
+// выводящий в консоль текст "Чат вконтакте закрылся :(".
+let onClose = () => {
+  console.log("Чат вконтакте закрылся :(");
+};
+vkChat.on('close', onClose);
+
+
 webinarChat.on('message', chatOnMessage);
 facebookChat.on('message', chatOnMessage);
 vkChat.on('message', chatOnMessage);
-
 
 // Закрыть вконтакте
 setTimeout( ()=> {
   console.log('Закрываю вконтакте...');
 vkChat.removeListener('message', chatOnMessage);
+// Вызывать у чата вконтакте метод close().
+vkChat.close();
 }, 10000 );
 
 
