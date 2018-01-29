@@ -12,7 +12,7 @@ class ChatApp extends EventEmitter {
     // Посылать каждую секунду сообщение
     setInterval(() => {
       this.emit('message', `${this.title}: ping-pong`);
-  }, 1000);
+    }, 1000);
   }
   
   // метод close, который вызывает событие close 
@@ -31,7 +31,9 @@ let chatOnMessage = (message) => {
   console.log(message);
 };
 
-// Добавить обработчик события message для Чата Вебинара (webinarChat), который выводит в консоль сообщение 'Готовлюсь к ответу'. Обработчик создать в отдельной функции.
+// Добавить обработчик события message для Чата Вебинара (webinarChat),
+// который выводит в консоль сообщение 'Готовлюсь к ответу'.
+// Обработчик создать в отдельной функции.
 let ready_Message = (message) => {
   console.log("Готовлюсь к ответу");
 };
@@ -60,21 +62,23 @@ vkChat.on('message', chatOnMessage);
 // Закрыть вконтакте
 setTimeout( ()=> {
   console.log('Закрываю вконтакте...');
-vkChat.removeListener('message', chatOnMessage);
-// Вызывать у чата вконтакте метод close().
-vkChat.close();
+  vkChat.removeListener('message', chatOnMessage);
+  vkChat.removeListener('message', ready_Message);
+  // Вызывать у чата вконтакте метод close().
+  vkChat.close();
 }, 10000 );
 
 
 // Закрыть фейсбук
 setTimeout( ()=> {
   console.log('Закрываю фейсбук, все внимание — вебинару!');
-facebookChat.removeListener('message', chatOnMessage);
+  facebookChat.removeListener('message', chatOnMessage);
 }, 15000 );
 
 
 // Закрыть вебинар
 setTimeout( ()=> {
   console.log('Закрываю вебинар!');
-webinarChat.removeListener('message', chatOnMessage);
-}, 20000 );
+  webinarChat.removeListener('message', chatOnMessage);
+  webinarChat.removeListener('message', ready_Message);
+}, 30000 );
