@@ -1,18 +1,54 @@
+const https = require('https');
 const http = require('http');
 const fs = require('fs');
+const url = require('url')
+const querystring = require('querystring');
 const port = 3000;
 const form_contents = fs.readFileSync('task.html', 'utf8');
-//const url = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
 
-//const request = http.request(url);
+function process(data) {
+    let curr = JSON.parse(data);
 
-function read_request(req) {
-    return "REQUEST";
 }
 
-function translate(text) {
-    return "TRANSLATED";
+function translate_response(res, callback) {
+    let data = '';
+    res.on('data', chunk => data += chunk);
+    res.on('end', function () { callback(data); });
 }
+
+// Отправить запрос на Яндекс и получить переведенный текст
+function translate(text, callback) {
+    const key = 'trnsl.1.1.20160723T183155Z.f2a3339517e26a3c.d86d2dc91f2e374351379bb3fe371985273278df';
+    const lang = 'ru-en';
+
+    const query = querystring.stringify({
+        'key': key,
+        'lang': lang,
+        'text': text
+    });
+    const url = 'https://translate.yandex.net/api/v1.5/tr.json/translate?'+query;
+ 
+    const request = https.request(url);
+    request.on('response', res => translate_response(res, callback)); 
+    request.end();
+}
+
+
+// Чтение запроса клиента
+function on_request(req, res) {        
+    let data = '';
+    req.on('data', chunk => data += chunk); 
+    req.on('end', () => {
+        params = querystring.parse(data);
+        translate(params.comment, text => {
+            res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});
+            res.write(text);
+            res.end(); 
+        });
+    });
+}
+
 
 function handler(req, res) {
     if (req.method == "GET") {
@@ -24,19 +60,10 @@ function handler(req, res) {
         res.write(form_contents);
         res.end();
     } else {
-        var text = read_request(req);
-        var translated = translate(text);
+        on_request(req, res);
 
-        res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});
-        res.write(translated);
-        res.end();
-
-        // 1. Прочитать данные клиента (см. презентацию)
-        // 2. Отправить запрос на Яндекс
-        // 3. Получить переведенный текст
-        // 4. Отправить текст клиенту
+        // 4. Формить текст клиенту и обработать ошибки
     }
-
 }
 
 const server = http.createServer(); 
@@ -45,46 +72,3 @@ server.on('request', handler);
 server.on('listening', () => {
         console.log('Start HTTP on port %d', port); });
 server.listen(port);
-
-
-
-
-
-
-/*
-
-function btnClick(text)
-        {
-        }
-
-
-
-request.on('response');
-request.end();
-
-
-// обработчик ответа сервера
-function handler(response) {
-   // сбор ответа сервера
-    let data = '';
-    response.on('data', function (chunk) {
-    data += chunk; });
-    // приступаем к обработке данных б отдав их функции process
-    response.on('end', function () { process(data);
-    }); }
-
-// разбираем данные, которые пришли с сервера
-function parse(data, type) { switch (type) {
-    case 'application/json': data = JSON.parse(data); break;
-    case 'application/x-www-form-urlencoded': data = querystring.parse(data);
-    break;
-    }
-    return data; }
-
-    function process(data) {
-        let curr = JSON.parse(data); curr
-        .filter(item => item.CharCode === 'USD' || item.CharCode === 'EUR')
-        .forEach(item => console.log(item.Name, item.Value)); }
-
-
-*/
