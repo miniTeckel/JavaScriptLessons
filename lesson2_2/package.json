@@ -1,0 +1,25 @@
+{
+  "name": "lesson2_2",
+  "private": true,
+  "scripts": {
+    "eslint": "eslint js/",
+    "test": "npm run eslint"
+  },
+  "engines": {
+    "node": "6.10"
+  },
+  "devDependencies": {
+    "body-parser": "^1.17.2",
+    "eslint": "4.3.0",
+    "express": "^4.15.4",
+    "nodemon": "^1.14.12"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
