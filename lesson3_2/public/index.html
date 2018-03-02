@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chat</title>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <textarea class="chat-window" name="name" rows="20" cols="80"></textarea>
+    <p></p>
+    <span>Добавить юзера:</span>
+    <form>
+      <input class="input-name" type="text" size="20" placeholder="Имя">
+      <input class="input-lastname" type="text" size="20" placeholder="Фамилия">
+      <input class="input-phone" type="text" size="20" placeholder="Телефон">
+      <input class="send-user" type="submit"><br>
+    </form>
+    <form>
+      <button class="get-data">Получить все данные</button>
+    </form>
+    <form>
+      <input class="update-id" type="text" size="30" placeholder="ID">
+      <input class="update-name" type="text" size="20" placeholder="Имя">
+      <input class="update-lastname" type="text" size="20" placeholder="Фамилия">
+      <input class="update-phone" type="text" size="20" placeholder="Телефон">
+      <button class="update-user">Обновить данные</button><br>
+    </form>
+
+    <form>
+      <input class="delete-id" type="text" size="30" placeholder="ID">
+      <button class="delete-user">Удалить юзера</button><br>
+    </form>
+
+    <form>
+      <input class="find-name" type="text" size="20" placeholder="Имя">
+      <input class="find-lastname" type="text" size="20" placeholder="Фамилия">
+      <input class="find-phone" type="text" size="20" placeholder="Телефон">
+      <button class="find-user">Найти юзера</button><br>
+    </form>
+
+
+  </body>
+  <script src="main.js" charset="utf-8"></script>
+</html>
